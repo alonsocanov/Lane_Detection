@@ -5,42 +5,6 @@ import glob
 import matplotlib.pyplot as plt
 
 
-# color normalization of HSV to OpenCV HSV
-def hsv2cvhsv(hsv: np.ndarray) -> np.ndarray:
-    # For HSV, Hue range is [0,179], Saturation range is [0,255]
-    # and Value range is [0,255]. Different software use different scales.
-    # So if you are comparing in OpenCV values with them, you need to normalize these ranges.
-    hsv_cv = np.array([179, 255, 255])
-    hsv_orig = np.array([360, 100, 100])
-    cv_hsv = np.divide((hsv * hsv_cv), hsv_orig)
-    return cv_hsv
-
-
-# check available files in path
-def availableFiles(path: str) -> str:
-    full_path = glob.glob(path, recursive=True)
-    if full_path:
-        file = full_path[0]
-    else:
-        file = None
-    return file
-
-
-# check if key q was pressed
-def check(c: str = 'q') -> bool:
-    if cv2.waitKey(1) & 0xFF == ord(c):
-        return True
-    return False
-
-
-def resize(img: np.array, factor: float = None) -> np.array:
-    h, w = img.shape[:2]
-    if not factor:
-        factor = 300 / h
-    img = cv2.resize(img, (int(factor * w), int(factor * h)))
-    return img
-
-
 def imageConcatenate(*imgs: np.array) -> np.array:
     shape = list()
     num_chanels = list()
@@ -103,10 +67,10 @@ def rectangleZone(img: np.array, left_x: int, right_x: int) -> None:
         l_x_max = np.min([w - 1, left_x + W_BOX // 2])
         r_x_min = np.max([0, right_x - W_BOX // 2])
         r_x_max = np.min([w - 1, right_x + W_BOX // 2])
-        print('boxes:', l_x_min, l_x_max, r_x_min, r_x_max)
+        # print('boxes:', l_x_min, l_x_max, r_x_min, r_x_max)
 
         l_offset, r_offset = left_x, right_x
-        print('offset:', l_offset, r_offset)
+        # print('offset:', l_offset, r_offset)
 
         l_img = img[y_min:y_max, l_x_min:l_x_max]
         left_x = lineContinue(l_img, l_x_min)
