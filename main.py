@@ -45,8 +45,9 @@ def main():
         roi = image.bitwise_and(edges, mask)
         lines = image.hough_lines(roi, 6, np.pi / 60, 160, 40, 25)
         lines = image.filter_slope(lines)
+        left_lanes, right_lanes = image.left_right_lane(lines)
 
-        image.draw_lines(frame, lines)
+        image.draw_lines(frame, left_lanes)
         # print(lines)
 
         # img = imageConcatenate(blur, edges)

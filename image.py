@@ -88,7 +88,7 @@ class Image:
 
     def get_slope(self, lines: np.ndarray):
         denominator = lines[:, 2] - lines[:, 0]
-        denominator[denominator == 0] = .1
+        denominator = np.where(denominator == 0, .1, denominator)
         numerator = lines[:, 3] - lines[:, 1]
         return numerator / denominator
 
@@ -96,11 +96,11 @@ class Image:
         slope = self.get_slope(lines)
         return lines[np.abs(slope) > max_slope]
 
-    def left_right_lane(self, lines, slope):
-        left_line_x = []
-        left_line_y = []
-        right_line_x = []
-        right_line_y = []
+    def left_right_lane(self, lines: np.ndarray):
+        slope = self.get_slope(lines)
+        left_lane = lines[slope <= 0]
+        right_lane = lines[slope > 0]
+        return left_lane, right_lane
 
     def draw_lines(self, img: np.ndarray, lines: np.ndarray):
         line_thickness = 2
