@@ -96,7 +96,7 @@ class Image:
         slope = self.get_slope(lines)
         return lines[np.abs(slope) > max_slope]
 
-    def left_right_lane(self, lines: np.ndarray):
+    def left_right_lanes(self, lines: np.ndarray):
         slope = self.get_slope(lines)
         left_lane = lines[slope <= 0]
         right_lane = lines[slope > 0]

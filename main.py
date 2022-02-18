@@ -1,6 +1,3 @@
-from curses import window
-from matplotlib import image
-from utils import imageConcatenate, lineStart, lineContinue, indexPts, rectangleZone
 import cv2
 import numpy as np
 import argparse
@@ -33,6 +30,13 @@ def main():
             [width, height]]], dtype=np.int32)
     mask = image.mask_region_of_interest((width, height), roi_vertices)
 
+    # point below the horizon
+    min_y = height * (3 / 5)
+    # point at bottom of the image
+    max_y = height
+    # image x center
+    center_x = width / 2
+
     print('Press Q to quit')
     while video.isOpened():
         ret, frame = video.read()
@@ -45,9 +49,11 @@ def main():
         roi = image.bitwise_and(edges, mask)
         lines = image.hough_lines(roi, 6, np.pi / 60, 160, 40, 25)
         lines = image.filter_slope(lines)
-        left_lanes, right_lanes = image.left_right_lane(lines)
+        if lines.size > 0:
+            left_lanes, right_lanes = image.left_right_lanes(
+                lines)
 
-        image.draw_lines(frame, left_lanes)
+            image.draw_lines(frame, lines)
         # print(lines)
 
         # img = imageConcatenate(blur, edges)
