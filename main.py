@@ -52,7 +52,11 @@ def main():
         if lines.size > 0:
             left_lanes, right_lanes = image.left_right_lanes(
                 lines)
-
+            # line_left = image.single_line(left_lanes)
+            # line_right = image.single_line(right_lanes)
+            # line = np.array(line_left)
+            # line = np.append(line, line_right, axis=0)
+            # print(line.reshape(-1, 4))
             image.draw_lines(frame, lines)
         # print(lines)
 

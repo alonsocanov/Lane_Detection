@@ -102,6 +102,15 @@ class Image:
         right_lane = lines[slope > 0]
         return left_lane, right_lane
 
+    def single_line(self, lines):
+        # lines_y = np.average(lines[:, [1, 3]])
+        print(lines.shape)
+        line = np.average(lines, axis=0).astype(np.int)
+        print(line)
+        # print(line_x.shape)
+        # poly = np.polyfit(line_y, line_x, deg=1)
+        return line
+
     def draw_lines(self, img: np.ndarray, lines: np.ndarray):
         line_thickness = 2
         for x1, y1, x2, y2 in lines:
